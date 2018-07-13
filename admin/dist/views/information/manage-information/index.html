@@ -1,0 +1,200 @@
+<title>管理信息</title>
+
+
+<div style="margin-top: 5px;" class="layui-main">
+  <button class="layui-btn layui-btn-normal" style="float: right;margin-left: 5%;" id="Add">添加字段</button>
+  <table id="demoEvent" class="layui-table" lay-filter="demoEvent" style="width: 100%"></table>
+</div>
+
+
+
+<script type="text/html" id="barDemo">
+  <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">修改</a> -->
+  <!-- <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a> -->
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script>
+
+  layui.use('form', function () {
+    var form = layui.form;
+    form.render(); //更新全部
+
+
+
+
+    //监听提交
+    form.on('submit(formDemo)', function (data) {
+      // layer.msg(JSON.stringify(data.field));
+      console.log(data.field);
+      let obj = data.field;
+      var Columnid = sessionStorage.getItem('Columnid');
+
+
+      console.log(Columnid);
+      var $ = layui.jquery, layer = layui.layer;
+      $.ajax({
+        type: "post",
+        url: "http://localhost/admin/Program/addTableField",
+        data: { Columnid: Columnid, field: obj.field, fieldType: obj.fieldType, fieldSize: obj.fieldSize, field_annotation: obj.field_annotation, sort: obj.sort },
+        success: function (data) {
+          console.log(data);
+        }
+      })
+
+    });
+  });
+
+
+  layui.use('table', function () {
+    var table = layui.table;
+    var Column = sessionStorage.getItem('Column');
+
+    var str = sessionStorage.getItem('dui');
+    let dui = eval('(' + str + ')');
+    console.log(dui);
+    dui = dui.data;
+     let list = [];
+
+    
+    for (let index = 0; index < dui.length; index++) {
+      list[index]= { field: dui[index].field, width: '12%', edit: 'text', title: dui[index].field_annotation};
+    }
+
+    console.log(list);  
+    let clist= [list];
+    console.log(clist);
+    
+    table.render({
+      elem: '#demoEvent'
+      , url: '/admin/Column/CheckTable?table=' + Column
+      , cellMinWidth: 100 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      , cols: clist
+      , id: 'demoEvent'
+      , page: true
+      , height: 500
+    });
+
+    // location.reload();
+
+
+
+
+    var $ = layui.jquery, layer = layui.layer;
+    $(document).on('click', '#Add', function () {
+      layer.open({
+        type: 1,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['80%', '60%'], //宽高
+        content: '<div style="padding:3% 3% 3% 1%"><form class="layui-form" action=""><div class="layui-form-item"><label class="layui-form-label">字段</label><div class="layui-input-block"><input type="text" name="field" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"></div></div><div class="layui-form-item"><label class="layui-form-label">数据类型</label><div class="layui-input-block"><select name="fieldType" lay-filter="aihao"><option value="varchar">varchar(字符型0-255字节)</option><option value="char">char(定长字符型0-255字节)</option><option value="text">text(小型字符型)</option><option value="mediumtext">mediumtext(中型字符型)</option><option value="longtext">longtext(大型字符型)</option><option value="tinyint">tinyint(小数值型)</option><option value="smallint">smallint(中数值型)</option><option value="int">int(大数值型)</option><option value="bigint">bigint(超大数值型)</option><option value="float">float(数值浮点型)</option><option value="double">double(数值双精度型)</option><option value="date">date(日期型)</option><option value="datetime">datetime(日期时间型)</option></select></div></div><div class="layui-form-item"><label class="layui-form-label">数据大小</label><div class="layui-input-block"><input type="text" name="fieldSize" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"></div></div><div class="layui-form-item"><label class="layui-form-label">注释</label><div class="layui-input-block"><input type="text" name="field_annotation" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"></div></div><div class="layui-form-item"><label class="layui-form-label">排序</label><div class="layui-input-block"><input type="text" name="sort" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"></div></div><div class="layui-form-item" style="margin-top:10px"><div class="layui-input-block"><button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button> <button type="reset" class="layui-btn layui-btn-primary">重置</button></div></div></form></div>'
+      });
+
+
+      layui.use('form', function () {
+        var form = layui.form;
+        form.render(); //更新全部
+        //监听提交
+      });
+
+    });
+    $(document).on('click', '#guan', function () {
+      
+      location.href = 'http://localhost/admin#/information/management/';
+
+
+
+    });
+
+    
+
+    //监听单元格编辑
+    table.on('edit(demoEvent)', function (obj) {
+      var value = obj.value //得到修改后的值
+        , data = obj.data //得到所在行所有键值
+        , field = obj.field; //得到字段
+      console.log(obj);
+      layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+    });
+
+    //监听表格复选框选择
+    table.on('checkbox(demoEvent)', function (obj) {
+      console.log(obj)
+    });
+    //监听工具条
+    table.on('tool(demoEvent)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'detail') {
+        // layer.msg('ID：' + data.id + ' 的查看操作');
+        // location.href = 'http://localhost/admin#/component/database/'
+      } else if (obj.event === 'del') {
+        layer.confirm('真的删除行么', function (index) {
+          obj.del();
+          layer.close(index);
+          console.log(obj.data.field);
+          var Columnid = sessionStorage.getItem('Columnid');
+
+          $.ajax({
+            type: "post",
+            url: "http://localhost/admin/Program/DeleTableField",
+            data: { Columnid: Columnid, deleField: obj.data.field },
+            success: function (data) {
+              console.log(data);
+            }
+          })
+
+        });
+      } else if (obj.event === 'edit') {
+        // layer.alert('编辑行：<br>' + JSON.stringify(data))
+        // layer.msg('ID：' + data.id + ' 的查看操作');        
+        // console.log("点到了");
+
+      }
+
+      if (obj.event === 'setColumn') {
+        layer.prompt({
+          formType: 2
+          , title: '修改 ID 为 [' + data.id + '] 的用户签名'
+          , value: data.sign
+        }, function (value, index) {
+          layer.close(index);
+          //这里一般是发送修改的Ajax请求
+          //同步更新表格和缓存对应的值
+          obj.update({
+            sign: value
+          });
+        });
+      }
+
+
+
+
+    });
+
+    var $ = layui.$, active = {
+      getCheckData: function () { //获取选中数据
+        var checkStatus = table.checkStatus('idTest')
+          , data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+      }
+      , getCheckLength: function () { //获取选中数目
+        var checkStatus = table.checkStatus('idTest')
+          , data = checkStatus.data;
+        layer.msg('选中了：' + data.length + ' 个');
+      }
+      , isAll: function () { //验证是否全选
+        var checkStatus = table.checkStatus('idTest');
+        layer.msg(checkStatus.isAll ? '全选' : '未全选')
+      }
+    };
+
+    $('.demoTable .layui-btn').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+
+
+
+  });
+</script>

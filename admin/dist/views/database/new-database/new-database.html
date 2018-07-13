@@ -1,0 +1,93 @@
+<title>新建数据库</title>
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a lay-href="database/new-database/index">
+      <cite>数据库</cite>
+    </a>
+    <a>
+      <cite>新建数据库</cite>
+    </a>
+
+  </div>
+</div>
+<div class="layui-main content-admin">
+  <div class="LAY_preview">
+    <div class="layui-container">
+      <div class="layadmin-header">
+        <form class="layui-form" action="">
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">表名</label>
+            <div class="layui-input-block">
+              <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">表名(中文)</label>
+            <div class="layui-input-block">
+              <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">选择类型</label>
+            <div class="layui-input-block">
+              <select name="city" lay-verify="required">
+                <option value=""></option>
+                <option value="0" selected="">信息表</option>
+                <option value="1">人员表</option>
+                <option value="3">机构表</option>
+                <option value="4">数据词典表</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<style type="text/css">
+  .content-admin {
+    margin-top: 100px !important;
+  }
+
+  .add-field {
+    float: right;
+    margin-left: 5%;
+  }
+</style>
+
+<script>
+  //Demo
+  layui.use('form', function () {
+    var form = layui.form;
+    // location.reload();
+    // form.reload();
+
+    //监听提交
+    form.on('submit(formDemo)', function (data) {
+      layer.msg(JSON.stringify(data.field));
+      return false;
+    });
+  });
+</script>
+
+
+<script src="layui/NetWork/Model/businessLogic.js"></script>
+<!-- 业务代码调用 -->
+<script src="layui/NetWork/index.js"></script>
+<!-- 模拟借口 -->

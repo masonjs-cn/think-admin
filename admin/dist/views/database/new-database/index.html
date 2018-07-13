@@ -1,0 +1,41 @@
+<title>新建数据库</title>
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a>
+      <cite>数据库</cite>
+    </a>
+    
+  </div>
+</div>
+
+<div class="layui-main content-admin">
+  <button class="layui-btn layui-btn-normal" style="float: right;" id="Add">添加表</button>
+  <table id="demoEvent" class="layui-table" lay-filter="demoEvent" style="width: 100%"></table>
+</div>
+
+<style type="text/css">
+  .content-admin {
+    margin-top: 30px !important;
+  }
+
+  .add-field {
+    float: right;
+    margin-left: 5%;
+  }
+</style>
+
+
+<script src="layui/NetWork/Model/businessLogic.js"></script>
+<!-- 业务代码调用 -->
+<!-- <script src="layui/NetWork/index.js"></script> -->
+<!-- 模拟借口 -->
+
+<script type="text/html" id="barDemo">
+  <!-- <a class="layui-btn layui-btn-xs" lay-event="detail">编辑</a> -->
+<!-- <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a> -->
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script src="layui/view-js/index-database.js"></script>
