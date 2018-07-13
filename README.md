@@ -15,7 +15,7 @@
 - ptadmin.sql - mysql的sql 语句
 
 ### 代码使用：
-- chmod -R 777 ../ptadmin/sever/runtime thinkphp必须给予权限
+- ch mod -R 777 ../ptadmin/sever/runtime thinkphp必须给予权限
 
 ### 源码地址：
 
