@@ -14,6 +14,21 @@
 - sever - 服务端，基于thinkphp的后台开发
 - ptadmin.sql - mysql的sql 语句
 
+### 模块分析：
+1. 数据库
+  - 新建数据库
+  - 管理数据库
+2. 信息
+  - 管理信息  
+3. 用户
+  - 用户管理
+  - 角色管理
+  - 机构管理
+4. 系统
+  - 邮箱管理
+  - 短信管理
+  - 图片验证码管理
+
 ### 代码使用：
 - ch mod -R 777 ../ptadmin/sever/runtime thinkphp必须给予权限
 
