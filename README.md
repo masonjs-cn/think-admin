@@ -14,9 +14,8 @@
 - sever - 服务端，基于thinkphp的后台开发
 - ptadmin.sql - mysql的sql 语句
 
-### 目录结构：
-
-
+### 代码使用：
+ chmod -R 777 ../ptadmin/sever/runtime thinkphp必须给予权限
 
 ### 源码地址：
 
