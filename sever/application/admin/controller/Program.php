@@ -12,6 +12,7 @@ namespace app\admin\controller;
 class Program
 {
 
+    //增加字段接口
     public function addTableField(){
         //    增加字段接口
         //    Columnid 栏目id
@@ -60,32 +61,7 @@ class Program
 
     }
 
-    public function QueryField(){
-        //    通过字段和值查询这条信息
-        //    Columnid  表id
-        //    QueryField  查询的字段
-        //    QueryKey  查询的字段值
-
-
-        $data = input('post.');//think5 的验证机制
-
-        $Columnid = $data['Columnid'];
-        $QueryField = $data['QueryField'];
-        $QueryKey=$data['QueryKey'];
-
-
-
-        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
-        $infos=model('Program')->seleField($table[0]['Column'],$QueryField,$QueryKey);//获取修改表的名称
-
-        $fanhui= array('flag'=>1, 'msg'=>'成功','infos'=>$infos);
-
-        echo  json_encode($fanhui);
-
-
-    }
-
-
+    //删除字段接口
     public function DeleTableField(){
         //    删除字段接口
         //    Columnid  表id
@@ -105,6 +81,37 @@ class Program
 
     }
 
+    //通过字段查询信息
+    public function QueryField(){
+        //    通过字段和值查询这条信息
+        //    Columnid  表id
+        //    QueryField  查询的字段
+        //    QueryKey  查询的字段值
+
+        $data = input('get.');//think5 的验证机制
+        $Columnid = $data['Columnid'];
+        $QueryField = $data['QueryField'];
+        $QueryKey=$data['QueryKey'];
+        $a=$data['page'];
+        $b=$data['limit'];
+
+        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
+        $Count=model('Column')->CheckList($table[0]['Column']);
+        $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
+
+
+        $res = [
+            'code' => 0,
+            'count'=>$Count[0]["COUNT(*)"],
+            'msg' => '',
+            'data' => $fanhui
+        ];
+
+        echo json_encode($res);
+
+    }
+
+    //通过表和字段，给字段添加信息
     public function AddInfos(){
         //    添加信息
         //    Columnid  表id
@@ -113,17 +120,31 @@ class Program
         $data = input('post.');//think5 的验证机制
 
         $Columnid = $data['Columnid'];//表
+        if ($Columnid==null||$Columnid==""){
+            $fanhui= array('flag'=>0, 'msg'=>'请填写表id');
+            echo  json_encode($fanhui);
+        }else{
+            $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
+            $infoJson = json_decode($data['infoJson']);//表
+            if ($data['infoJson']==null||$infoJson==""){
+                $fanhui= array('flag'=>0, 'msg'=>'没有正确的传值');
+                echo  json_encode($fanhui);
+            }else{
+                model('Program')->addFieldinfos($table[0]['Column'],$infoJson);
+                $fanhui= array('flag'=>1, 'msg'=>'成功');
+                echo  json_encode($fanhui);
+            }
 
-        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
-        $list = explode(",",$data["list"]);
+        }
 
-        model('Program')->addFieldinfos($table[0]['Column'],$list,$data);
 
-        $fanhui= array('flag'=>1, 'msg'=>'成功');
-        echo  json_encode($fanhui);
 
 
     }
+
+
+
+
 
 
 

@@ -18,16 +18,17 @@ class Column extends Model
         $Column=$data['Column'];
         $ColumnName=$data['ColumnName'];
 
-        $sql = "CREATE TABLE IF NOT EXISTS `".$Column."` ( `id` INT UNSIGNED AUTO_INCREMENT, PRIMARY KEY ( `id` ) ) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT='$ColumnName'";
+        $sql = "CREATE TABLE IF NOT EXISTS `zmyq_".$Column."` ( `id` INT UNSIGNED AUTO_INCREMENT, PRIMARY KEY ( `id` ),`newTime` VARCHAR(100) NOT NULL) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT='$ColumnName'";
         Db::execute($sql);
 
     }
 
     public function deleTable($data){
         $Column=$data['Column'];
-        $sql = "DROP TABLE `".$Column."` ";
-//        print_r($sql)  ;
+        $sql = "DROP TABLE `zmyq_".$Column."` ";
         Db::execute($sql);
+        $delesql ="DELETE FROM `program` WHERE `program`.table_form='zmyq_".$Column."'";
+        Db::execute($delesql);
     }
 
     public function QueryTable($table_form,$a,$b){
@@ -40,7 +41,7 @@ class Column extends Model
     {
         $shu=$this->shu();
 //        print_r($shu);
-        $newdata=array("Column"=>$data['Column'],"ColumnName"=>$data['ColumnName'],"Columnid"=>$shu);
+        $newdata=array("Column"=>"zmyq_".$data['Column'],"ColumnName"=>$data['ColumnName'],"Columnid"=>$shu);
         $this->save($newdata);
     }
 
@@ -48,14 +49,14 @@ class Column extends Model
 
         $Column=$data['Column'];
 //        $ColumnName=$data['ColumnName'];
-        $sql = "DELETE FROM `Column` where `Column` = '".$Column."' ";
+        $sql = "DELETE FROM `Column` where `Column` = 'zmyq_".$Column."' ";
         Db::execute($sql);
     }
 
     public function sele($data)
     {
         $Column=$data['Column'];
-       return Db::table('Column')->where('Column',$Column)->find();
+       return Db::table('Column')->where('Column',"zmyq_".$Column)->find();
 
     }
 

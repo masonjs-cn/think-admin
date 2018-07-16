@@ -19,25 +19,18 @@ class Program extends Model
         return  $this->save($data);
     }
 
-    public function addFieldinfos($table,$list,$data){
+    public function addFieldinfos($table,$infoJson){
 
-        $Field = "";
-        $Fieldskty = "";
-
-        for($a = 0; $a<sizeof($list);$a++){
-
-            if ($a == 0){
-                $Field = "`".$list[$a]."`";
-                $Fieldskty = "'".$data[$list[$a]]."'";
-
-            }else{
-                $Field = $Field .",". "`".$list[$a]."`";
-                $Fieldskty = $Fieldskty .","."'".$data[$list[$a]]."'";
-            }
-
+        $Fkey="";
+        $Fval="";
+        foreach($infoJson as $key => $val){
+            $Fkey = $Fkey."`$key`,";
+            $Fval = $Fval."'$val',";
         }
-
-        $sql = "INSERT INTO `$table` ($Field) VALUES ($Fieldskty)";
+        $Fkey=rtrim($Fkey, ',');
+        $Fval=rtrim($Fval, ',');
+        $time=time();
+        $sql = "INSERT INTO `$table` ($Fkey,`".'newTime'."`) VALUES ($Fval,'".$time."')";
         Db::execute($sql);
     }
 
@@ -45,6 +38,15 @@ class Program extends Model
     {
         //查询值的sql
         $sql = "SELECT * FROM `".$table."` WHERE  `".$field."` = '".$Columnid."'";
+        return Db::query($sql);
+    }
+
+    public function CheckTable($table,$a,$b,$QueryField,$QueryKey)
+    {
+
+        //查询值的sql
+        $sql = "SELECT * FROM `$table` WHERE $QueryField = ".$QueryKey."  LIMIT ".$a.", ".$b." ";
+//        print_r($sql);
         return Db::query($sql);
     }
 

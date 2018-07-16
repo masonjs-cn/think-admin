@@ -15,7 +15,7 @@ class Column  extends Controller
 {
 
 
-
+    //添加表
     public function newTable(){
         $data = input('post.');//think5 的验证机制
 
@@ -34,11 +34,11 @@ class Column  extends Controller
         echo  json_encode($fanhui);
     }
 
+    //删除表
     public function deleTable(){
         $data = input('post.');//think5 的验证机制
 
         $fanhui="";
-
         $cha=model('Column')->sele($data);
         if ($cha == null){
             $fanhui= array('flag'=>0, 'msg'=>'没有这张表');
