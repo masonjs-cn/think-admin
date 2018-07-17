@@ -13,6 +13,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class People
 {
+
+
+
     public function registered(){
         $data = input('post.');//think5 的验证机制
 //        username  用户名/手机号
@@ -39,27 +42,40 @@ class People
     }
     public function mailYzm()
     {
+        //Host      链接qq域名邮箱的服务器地址
+        //Port      端口
+        //e_mail    邮箱
+        //title     标题
+        //content   内容
+        //timu      题目，也就是发件人的名字
+        //Username  smtp登录的账号 这里填入字符串格式的qq号即可
+        //Password  smtp登录的密码 使用生成的授权码（就刚才叫你保存的最新的授权码）
+
+
         $data = input('post.');//think5 的验证机制
-        $yzm = mt_rand(10000,99999);//提前定义的一个验证码
-
-        //        e_mail    邮箱
-        //        title     标题
-        //        content   内容
-        //        timu      题目，也就是发件人的名字
-
-
-
-        $Host='smtp.qq.com'; //链接qq域名邮箱的服务器地址
-        $Port=465;//端口
-        $Hostname = "http://localhost/";//服务器地址
-
         $e_Mail = $data['e_mail']; // 这个是发送的邮箱，肯定是接口调用的
+        $e_Mailid = $data['e_mailid'];
 
-        $title = '注册成功';//标题
-        $content = '您好:'."<br/>".'&nbsp&nbsp&nbsp&nbsp我们收到了来自您的通行证的安全请求。请使用下面的验证码验证您的账号归属。'."<br/>".$yzm."<br/>".'请注意：该验证码将在10分钟后过期，请尽快验证!';
-        $timu = 'ptadmin';
-        $Username = '551840669@qq.com';//smtp登录的账号 这里填入字符串格式的qq号即可
-        $Password = 'qsbhukufgrehbbie';//smtp登录的密码 使用生成的授权码（就刚才叫你保存的最新的授权码）
+        // ======== 模板 一
+        $yzm = mt_rand(10000,99999);//提前定义的一个验证码
+        $mode1 = '您好:'."<br/>".'&nbsp&nbsp&nbsp&nbsp我们收到了来自您的通行证的安全请求。请使用下面的验证码验证您的账号归属。'."<br/>".$yzm."<br/>".'请注意：该验证码将在10分钟后过期，请尽快验证!';
+        // ======== 待更新
+
+        $info=model('People')->seleEmail($e_Mailid);//获取邮箱配置信息
+
+
+        $Host = ''.$info[0]['host'].'';
+        $Port=''.$info[0]['port'].'';//端口
+        $Hostname = ''.$info[0]['hostname'].'';//服务器地址
+        $title = ''.$info[0]['title'].'';//标题
+        if ($info[0]['content']==0){
+            $content = $mode1;
+        }
+
+        $timu =''.$info[0]['timu'].'';
+        $Username =''.$info[0]['username'].'';
+        $Password =''.$info[0]['password'].'';
+
 
         $flag = $this->sendMail($Host,$Port,$Hostname,$e_Mail,$title,$content,$timu,$Username,$Password);
 
