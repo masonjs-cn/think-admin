@@ -7,7 +7,8 @@
  */
 
 namespace app\admin\controller;
-
+use app\common\model\Email;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Program
 {
@@ -119,7 +120,13 @@ class Program
 
         $data = input('post.');//think5 的验证机制
 
+
+
         $Columnid = $data['Columnid'];//表
+        if (empty($data['send'])){
+            $send = 0;
+        }
+
         if ($Columnid==null||$Columnid==""){
             $fanhui= array('flag'=>0, 'msg'=>'请填写表id');
             echo  json_encode($fanhui);
@@ -130,7 +137,7 @@ class Program
                 $fanhui= array('flag'=>0, 'msg'=>'没有正确的传值');
                 echo  json_encode($fanhui);
             }else{
-                model('Program')->addFieldinfos($table[0]['Column'],$infoJson);
+                model('Program')->addFieldinfos($table[0]['Column'],$infoJson,$send);//send 来判断发送么？
                 $fanhui= array('flag'=>1, 'msg'=>'成功');
                 echo  json_encode($fanhui);
             }

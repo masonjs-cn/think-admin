@@ -19,17 +19,25 @@ class Program extends Model
         return  $this->save($data);
     }
 
-    public function addFieldinfos($table,$infoJson){
+    public function addFieldinfos($table,$infoJson,$send){
+//        $send  0 不发送 1发送
 
         $Fkey="";
         $Fval="";
+        $info = "";
         foreach($infoJson as $key => $val){
             $Fkey = $Fkey."`$key`,";
             $Fval = $Fval."'$val',";
+            if($send==1){
+                $info =$info.'<div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$key.'</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$val.'</div>';
+            }
         }
         $Fkey=rtrim($Fkey, ',');
         $Fval=rtrim($Fval, ',');
         $time=time();
+        if($send==1) {
+            model("Email")->mailYzm("954663633@qq.com", "BBA6E0E3-442E-6666-6B6B-53639CD557CC", $info);//      e_mail: 邮箱地址
+        }
         $sql = "INSERT INTO `$table` ($Fkey,`".'newTime'."`) VALUES ($Fval,'".$time."')";
         Db::execute($sql);
     }

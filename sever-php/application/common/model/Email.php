@@ -25,13 +25,18 @@ class Email
         $mode0 = '您好:'."<br/>".'&nbsp&nbsp&nbsp&nbsp我们收到了来自您的通行证的安全请求。请使用下面的验证码验证您的账号归属。'."<br/>".$yzm."<br/>".'请注意：该验证码将在10分钟后过期，请尽快验证!';
         return $mode0;
     }
+// ======== 模板2 一
+    public function mode1($message){
+          $mode1 = '<div style="text-align:center;"><div style="margin:0 auto;width:600px;"><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据名称</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据的值</div>'.$message.'	</div></div>';
+          return $mode1;
+    }
 
 // ======== 待更新
 
 
 
     //  发送验证码的一次封装
-    public function mailYzm($e_Mail,$e_Mailid)
+    public function mailYzm($e_Mail,$e_Mailid,$message)
     {
 
 //        e_mail: 邮箱地址
@@ -60,6 +65,8 @@ class Email
         $title = ''.$info[0]['title'].'';//标题
         if ($info[0]['content']==0){
             $content = $this->mode0($e_Mail);
+        }else if($info[0]['content']==1){
+            $content = $this->mode1($message);
         }
 
         $timu =''.$info[0]['timu'].'';
@@ -68,14 +75,16 @@ class Email
 
 
         $flag = $this->sendMail($Host,$Port,$Hostname,$e_Mail,$title,$content,$timu,$Username,$Password);
-
-        if($flag){
-            $fanhui= array('flag'=>1, 'msg'=>'发送邮件成功');
-            echo  json_encode($fanhui);
-        }else{
-            $fanhui= array('flag'=>0, 'msg'=>'发送邮件失败');
-            echo  json_encode($fanhui);
+        if ($info[0]['content']==0){
+            if($flag){
+                $fanhui= array('flag'=>1, 'msg'=>'发送邮件成功');
+                echo  json_encode($fanhui);
+            }else{
+                $fanhui= array('flag'=>0, 'msg'=>'发送邮件失败');
+                echo  json_encode($fanhui);
+            }
         }
+
 
     }
 

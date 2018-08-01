@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'localhost',
+    'hostname'        => '118.25.17.208',
     // 数据库名
-    'database'        => 'ptadmin',
+    'database'        => 'platform',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'platform',
     // 密码
-    'password'        => '',
+    'password'        => 'Dx6AMcwx63',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
