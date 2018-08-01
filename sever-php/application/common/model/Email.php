@@ -27,7 +27,8 @@ class Email
     }
 // ======== 模板2 一
     public function mode1($message){
-          $mode1 = '<div style="text-align:center;"><div style="margin:0 auto;width:600px;"><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据名称</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据的值</div>'.$message.'	</div></div>';
+//          $mode1 = '<div style="text-align:center;"><div style="margin:0 auto;width:600px;"><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据名称</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">数据的值</div>'.$message.'	</div></div>';
+          $mode1 ='<div style="text-align:center;">	<table width="600" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">		<tbody>			<tr>				<td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;">						数据名称</div>				</td>				<td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;margin:5px;">						数据的值</div>				</td>			</tr>			'.$message.'		</tbody>	</table></div>';
           return $mode1;
     }
 

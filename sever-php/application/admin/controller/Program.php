@@ -125,6 +125,8 @@ class Program
         $Columnid = $data['Columnid'];//表
         if (empty($data['send'])){
             $send = 0;
+        }else{
+            $send = $data['send'];
         }
 
         if ($Columnid==null||$Columnid==""){

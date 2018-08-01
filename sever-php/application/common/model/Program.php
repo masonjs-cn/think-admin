@@ -29,7 +29,8 @@ class Program extends Model
             $Fkey = $Fkey."`$key`,";
             $Fval = $Fval."'$val',";
             if($send==1){
-                $info =$info.'<div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$key.'</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$val.'</div>';
+//                $info =$info.'<div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$key.'</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$val.'</div>';
+                $info =$info.'<tr><td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;">						'.$key.'</div>				</td>				<td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;margin:5px;">						'.$val.'</div>				</td></tr>';
             }
         }
         $Fkey=rtrim($Fkey, ',');
