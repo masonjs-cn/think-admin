@@ -32,7 +32,7 @@ return [
     ],
     'api'=>[
       "__dir__"  =>['controller','view'],
-      "controller" => ['index','Image'],
+      "controller" => ['index','authCode'],
     ],
     // 其他更多的模块定义
 ];

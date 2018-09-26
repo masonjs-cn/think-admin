@@ -77,7 +77,7 @@ class Column extends Model
         return Db::query($sql);
     }
 
-
+    // 产生随机出的函数
     function shu() {
         $charid = strtoupper(md5(uniqid(mt_rand(), true)));
 

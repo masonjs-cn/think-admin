@@ -76,22 +76,29 @@ class Column  extends Controller
     }
     //查询表
     public function CheckTable(){
-        $data = input('get.');//think5 的验证机制
-        $a=$data['page'];
-        $b=$data['limit'];
+
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+        header('Access-Control-Allow-Methods: GET, POST, PUT');
+
+
+        $data = input('post.');//think5 的验证机制
+        $currentPage=$data['currentPage'];//当前页
+        $pageSize=$data['pageSize'];//一页加载多少
         $table=$data['table'];
 
 
         $Count=model('Column')->CheckList($table);
-        $fanhui=model('Column')->CheckTable($table,($a - 1) * $b,$b);
-
-
+        $fanhui=model('Column')->CheckTable($table,($currentPage- 1) * $pageSize,$pageSize);
 
         $res = [
             'code' => 0,
-            'count'=>$Count[0]["COUNT(*)"],
-            'msg' => '',
-            'data' => $fanhui
+            'pages' => [
+                "total"=>$Count[0]["COUNT(*)"],//总页数
+                "currentPage"=> $currentPage,//当前页
+                "pageSize"=> $pageSize,//一页加载多少
+            ],
+            'infos' => $fanhui
         ];
 
         echo json_encode($res);

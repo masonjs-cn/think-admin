@@ -85,29 +85,40 @@ class Program
     //通过字段查询信息
     public function QueryField(){
         //    通过字段和值查询这条信息
-        //    Columnid  表id
+        //    classid  表id
         //    QueryField  查询的字段
         //    QueryKey  查询的字段值
-
-        $data = input('get.');//think5 的验证机制
-        $Columnid = $data['Columnid'];
-        $QueryField = $data['QueryField'];
-        $QueryKey=$data['QueryKey'];
-        $a=$data['page'];
-        $b=$data['limit'];
-
-        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
-        $Count=model('Column')->CheckList($table[0]['Column']);
-        $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
+        // 指定允许其他域名访问
+        header('Access-Control-Allow-Origin:*');
+        // 响应类型
+        header('Access-Control-Allow-Methods:POST');
+        // 响应头设置
+        header('Access-Control-Allow-Headers:x-requested-with,content-type');
 
 
-        $res = [
-            'code' => 0,
-            'count'=>$Count[0]["COUNT(*)"],
-            'msg' => '',
-            'data' => $fanhui
-        ];
+        $data = input('post.');//think5 的验证机制
+        $postData = ["classid","QueryField","QueryKey",'page','limit'];
+        $Checkcode = $this->emptyData($data,$postData);
 
+        if ($Checkcode['code']==500){
+            $res = $Checkcode;
+        }else{
+            $Columnid = $data['classid'];
+            $QueryField = $data['QueryField'];
+            $QueryKey=$data['QueryKey'];
+            $a=$data['page'];
+            $b=$data['limit'];
+
+            $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
+            $Count=model('Column')->CheckList($table[0]['Column']);
+            $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
+            $res = [
+                'code' => 0,
+                'count'=>$Count[0]["COUNT(*)"],
+                'msg' => '',
+                'data' => $fanhui
+            ];
+        }
         echo json_encode($res);
 
     }
@@ -157,6 +168,26 @@ class Program
 
 
 
+    }
+
+//    ===== 工具
+
+    function emptyData($getkey,$getVal){
+        $res = [];
+        for ($x=0; $x<sizeof($getkey); $x++) {
+            if (empty($getkey[$getVal[$x]])){
+                $res = [
+                    'code' => 500,
+                    'msg' => "'请提交字段'$getVal[$x]"
+                ];
+                return $res;
+            }else{
+                $res = [
+                    'code' => 0
+                ];
+            }
+        }
+        return $res;
     }
 
 

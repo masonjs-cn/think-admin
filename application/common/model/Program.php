@@ -67,8 +67,6 @@ class Program extends Model
 //        print_r($sql);
     }
 
-
-
     public function addTableField($table,$field,$fieldType,$fieldSize){
         //新建表的sql
         $sql = "ALTER TABLE `".$table."` ADD `".$field."` ".$fieldType."(".$fieldSize.")";
