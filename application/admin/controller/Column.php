@@ -64,7 +64,7 @@ class Column  extends Controller
         $fanhui=model('Column')->QueryTable($table_form,($a - 1) * $b,$b);
 
         $res = [
-            'code' => 0,
+            'flag' => 1,
             'count'=>$Count[0]["COUNT(*)"],
             'msg' => '',
             'data' => $fanhui
@@ -92,7 +92,7 @@ class Column  extends Controller
         $fanhui=model('Column')->CheckTable($table,($currentPage- 1) * $pageSize,$pageSize);
 
         $res = [
-            'code' => 0,
+            'flag' => 1,
             'pages' => [
                 "total"=>$Count[0]["COUNT(*)"],//总页数
                 "currentPage"=> $currentPage,//当前页

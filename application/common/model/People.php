@@ -35,8 +35,15 @@ class People
         db('people')->insert($data);
     }
 
+    public function seleLoginTel($ipone){
+        $sql = "SELECT * FROM `people` WHERE `ipone` = '$ipone'";
+        return Db::query($sql);
+    }
 
-
+    public function loginEmail($e_mail){
+        $sql = "SELECT * FROM `people` WHERE `e_mail` = '$e_mail'";
+        return Db::query($sql);
+    }
 
 
 }

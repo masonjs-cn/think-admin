@@ -11,11 +11,74 @@ use app\common\model\Email;
 use PHPMailer\PHPMailer\PHPMailer;
 use think\Cookie;
 use \think\Request;
+use think\Session;
 
 
 
 class People
 {
+    // 手机号登录
+    public function loginTel(){
+        $data = input('post.');//think5 的验证机制
+        //        ipone  用户名/手机号
+        //        password  密码
+        //        code      验证码
+        $ipone=$data['ipone'];
+        $password=$data['password'];
+        $code=$data['code'];
+
+        $scode=Session::get('code','think');
+        if ($code == $scode){
+
+            $info=model('People')->seleLoginTel($ipone);//获取邮箱配置信息
+
+            if ($info[0]['password']==$password){
+               $shu = model('Column')->shu();
+                 Session::set($shu,$info[0]['rid'],'think');
+               $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
+            }else{
+                $fanhui= array('flag'=>0, 'msg'=>'密码错误');
+            }
+        }else{
+            $fanhui= array('flag'=>0, 'msg'=>'验证码错误');
+        }
+        echo  json_encode($fanhui);
+
+    }
+
+    public function loginEmail(){
+        $data = input('post.');//think5 的验证机制
+        //        e_mail    邮箱
+        //        password  密码
+        //        code      验证码
+        $e_mail=$data['e_mail'];
+        $password=$data['password'];
+        $code=$data['code'];
+
+        $scode=Session::get('code','think');
+        if ($code == $scode){
+
+            $info=model('People')->loginEmail($e_mail);//获取邮箱配置信息
+
+            if ($info[0]['password']==$password){
+                $shu = model('Column')->shu();
+                Session::set($shu,$info[0]['rid'],'think');
+                $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
+            }else{
+                $fanhui= array('flag'=>0, 'msg'=>'密码错误');
+            }
+        }else{
+            $fanhui= array('flag'=>0, 'msg'=>'验证码错误');
+        }
+        echo  json_encode($fanhui);
+
+    }
+
+    public function getTocken(){
+        $token = Request::instance()->header('Authorization');
+        echo Session::get($token,'think');
+    }
+
     //注册接口
     public function registered(){
         $data = input('post.');//think5 的验证机制
