@@ -17,7 +17,7 @@ class AuthCode
     function ImageCode(){
         session_start();
         // 2.imagecode.php文件（在Vcode的参数可以修改分别表示 高、宽、验证码字符串、杂点数、线条数、验证码类型【1:字母数字  2:数字  3:字母】）
-        $image= new Vcode(50,130,4,4,4,2);
+        $image= new Vcode(50,130,4,0,0,2);
         // 输出的图片，必须使用image标签才可以读取，不然无法读取
         echo $image;
     }

@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7694331-b7f9-4a97-99cd-ab5316428afe" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/AuthCode.php" afterPath="$PROJECT_DIR$/application/admin/controller/AuthCode.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/Column.php" afterPath="$PROJECT_DIR$/application/admin/controller/Column.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/People.php" afterPath="$PROJECT_DIR$/application/admin/controller/People.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/model/People.php" afterPath="$PROJECT_DIR$/application/common/model/People.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/config.php" afterPath="$PROJECT_DIR$/application/config.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="People.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="People.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/admin/controller/People.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+            <state relative-caret-position="265">
+              <caret line="65" column="62" lean-forward="false" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="62" />
               <folding>
                 <element signature="e#118#145#0#PHP" expanded="true" />
               </folding>
@@ -29,13 +26,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AuthCode.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AuthCode.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthCode.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="24" />
+            <state relative-caret-position="165">
+              <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
               <folding>
                 <element signature="e#117#144#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Vcode.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/common/model/Vcode.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="388">
+              <caret line="110" column="59" lean-forward="false" selection-start-line="110" selection-start-column="59" selection-end-line="110" selection-end-column="59" />
+              <folding>
+                <element signature="e#6#83#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,6 +86,11 @@
       <find>CheckList</find>
       <find>login</find>
       <find>session</find>
+      <find>Session</find>
+      <find>imagefontheight</find>
+      <find>imagechar</find>
+      <find>outputText</find>
+      <find>codeNum</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/public</dir>
@@ -93,7 +107,6 @@
         <option value="$PROJECT_DIR$/application/common/model/Sms.php" />
         <option value="$PROJECT_DIR$/application/common/model/imageCode.php" />
         <option value="$PROJECT_DIR$/application/common/model/ImageCode.php" />
-        <option value="$PROJECT_DIR$/application/common/model/Vcode.php" />
         <option value="$PROJECT_DIR$/application/admin/controller/Image.php" />
         <option value="$PROJECT_DIR$/application/admin/controller/ImageCode.php" />
         <option value="$PROJECT_DIR$/application/admin/controller/authCode.php" />
@@ -103,9 +116,10 @@
         <option value="$PROJECT_DIR$/application/common/model/Column.php" />
         <option value="$PROJECT_DIR$/application/admin/controller/Column.php" />
         <option value="$PROJECT_DIR$/application/config.php" />
-        <option value="$PROJECT_DIR$/application/admin/controller/AuthCode.php" />
         <option value="$PROJECT_DIR$/application/common/model/People.php" />
         <option value="$PROJECT_DIR$/application/admin/controller/People.php" />
+        <option value="$PROJECT_DIR$/application/admin/controller/AuthCode.php" />
+        <option value="$PROJECT_DIR$/application/common/model/Vcode.php" />
       </list>
     </option>
   </component>
@@ -120,7 +134,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="y" value="24" />
     <option name="width" value="1440" />
     <option name="height" value="780" />
   </component>
@@ -224,15 +238,15 @@
       <workItem from="1537869602203" duration="983000" />
       <workItem from="1537871184500" duration="5598000" />
       <workItem from="1537930229631" duration="5000" />
-      <workItem from="1537937837782" duration="5107000" />
+      <workItem from="1537937837782" duration="7522000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29079000" />
+    <option name="totallyTimeSpent" value="31494000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="780" extended-state="0" />
+    <frame x="0" y="24" width="1440" height="780" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -687,11 +701,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthCode.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+          <folding>
+            <element signature="e#117#144#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/common/model/Vcode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="18" column="21" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-          <folding />
+        <state relative-caret-position="388">
+          <caret line="110" column="59" lean-forward="false" selection-start-line="110" selection-start-column="59" selection-end-line="110" selection-end-column="59" />
+          <folding>
+            <element signature="e#6#83#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -711,20 +737,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/admin/controller/People.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state relative-caret-position="265">
+          <caret line="65" column="62" lean-forward="false" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="62" />
           <folding>
             <element signature="e#118#145#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthCode.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="24" />
-          <folding>
-            <element signature="e#117#144#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
