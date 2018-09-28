@@ -113,7 +113,7 @@ class Program
             $Count=model('Column')->CheckList($table[0]['Column']);
             $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
             $res = [
-                'code' => 0,
+                'flag' => 1,
                 'count'=>$Count[0]["COUNT(*)"],
                 'msg' => '',
                 'data' => $fanhui
@@ -189,6 +189,78 @@ class Program
         }
         return $res;
     }
+
+    //  ==========================================================================
+    public function uploadFile(){
+        header('Content-type: text/plain; charset=utf-8');
+
+        $dir = iconv("UTF-8", "GBK", "image/".date("Ymd/")."");
+
+        if (!file_exists($dir)){
+            mkdir ($dir,0777,true);
+            // echo '创建文件夹bookcover成功';
+        } else {
+            // echo '需创建的文件夹bookcover已经存在';
+        }
+
+        //文件数据
+        $files = $_FILES['theFile'];
+        //文件名
+        $fileName = $_REQUEST['fileName'];
+        //文件总大小
+        $totalSize = $_REQUEST['totalSize'];
+        //是否为末段
+        $isLastChunk = $_REQUEST['isLastChunk'];
+        //是否是第一次上传
+        $isFirstUpload = $_REQUEST['isFirstUpload'];
+        if ($_FILES['theFile']['error'] > 0) {
+            $status = 500;
+        } else {
+            // 如果第一次上传的时候，该文件已经存在，则删除文件重新上传
+            if ($isFirstUpload == '1' && file_exists($dir . $fileName) && filesize($dir . $fileName) == $totalSize) {
+                unlink($dir . $fileName);
+            }
+            // 否则继续追加文件数据
+            if (!file_put_contents($dir . $fileName, file_get_contents($_FILES['theFile']['tmp_name']), FILE_APPEND)) {
+                $status = 501;
+            } else {
+                // 在上传的最后片段时，检测文件是否完整（大小是否一致）
+                if ($isLastChunk === '1') {
+                    if (filesize($dir. $fileName) == $totalSize) {
+                        $status = 200;
+                    } else {
+                        $status = 502;
+                    }
+                } else {
+                    $status = 200;
+                }
+            }
+        }
+
+        if ($isLastChunk === '1'&&$status === 200) {
+            $Coccygeal = pathinfo($fileName, PATHINFO_EXTENSION);
+            $newname =  time().'.'.$Coccygeal;
+            rename($dir. $fileName,$dir.$newname);
+//            echo $dir.$newname;
+            $shu = model('Column')->shu();
+            $data = ['url' => $dir.$newname , 'identifies' => $shu ];
+            model("Program")->uploadFileModel($data);
+            echo json_encode(array(
+                'status' => $status,
+                'totalSize' => filesize($dir.$newname),
+                'isLastChunk' => $isLastChunk,
+                'id'=> $shu
+            ));
+        }else {
+            echo json_encode(array(
+                'status' => $status,
+                'totalSize' => filesize($dir . $fileName),
+                'isLastChunk' => $isLastChunk,
+            ));
+        }
+
+    }
+
 
 
 

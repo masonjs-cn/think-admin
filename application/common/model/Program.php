@@ -84,6 +84,10 @@ class Program extends Model
 
     }
 
+    public function uploadFileModel($data){
+        Db::table('file_manage')->insert($data);
+    }
+
 
 
 }

@@ -85,9 +85,9 @@ class Column  extends Controller
         $data = input('post.');//think5 的验证机制
         $currentPage=$data['currentPage'];//当前页
         $pageSize=$data['pageSize'];//一页加载多少
-        $table=$data['table'];
-
-
+        $Columnid=$data['classid'];
+        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
+        $table=$table[0]['Column'];
         $Count=model('Column')->CheckList($table);
         $fanhui=model('Column')->CheckTable($table,($currentPage- 1) * $pageSize,$pageSize);
 
