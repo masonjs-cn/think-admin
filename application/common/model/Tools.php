@@ -72,5 +72,13 @@ class Tools
     }
 
 
+    function object_to_array($obj) {
+        $res = [];
+        foreach($obj as $key => $val){
+            $res[$key] = $val;
+        }
+        return $res;
+    }
+
 
 }
