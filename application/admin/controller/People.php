@@ -33,7 +33,7 @@ class People
             $info=model('People')->seleLoginTel($ipone);//获取邮箱配置信息
 
             if ($info[0]['password']==$password){
-               $shu = model('Column')->shu();
+               $shu = model('Tools')->shu();
                  Session::set($shu,$info[0]['rid'],'think');
                $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
             }else{
@@ -61,7 +61,7 @@ class People
             $info=model('People')->loginEmail($e_mail);//获取邮箱配置信息
 
             if ($info[0]['password']==$password){
-                $shu = model('Column')->shu();
+                $shu = model('Tools')->shu();
                 Session::set($shu,$info[0]['rid'],'think');
                 $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
             }else{
@@ -75,8 +75,11 @@ class People
     }
 
     public function getTocken(){
-        $token = Request::instance()->header('Authorization');
-        echo Session::get($token,'think');
+        $token = Request::instance()->header('Authorization');// 人物权限
+        $fields = ["facility","issue","price","processing","Stick"]; // 要控制的值
+        $classid = "CE68E83A-65A7-E588-A63D-5D24CD2A755D";
+        $res=model('Role')->getTocken($token,$fields,$classid,"add");
+        echo $res;
     }
 
     //注册接口
