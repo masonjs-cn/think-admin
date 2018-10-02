@@ -13,22 +13,55 @@ use think\Db;
 
 class Column extends Model
 {
-    public function newTable($data)
+    // 新建表
+    public function newTable($column,$columnName)
     {
-        $Column=$data['Column'];
-        $ColumnName=$data['ColumnName'];
+        //增加一条数据库的信息
+        $shu=model('Tools')->random();
+        $newdata=array("column"=>"zmyq_".$column,"columnName"=>$columnName,"columnid"=>$shu);
+        $this->save($newdata);
 
-        $sql = "CREATE TABLE IF NOT EXISTS `zmyq_".$Column."` ( `id` INT UNSIGNED AUTO_INCREMENT, PRIMARY KEY ( `id` ),`newTime` VARCHAR(100) NOT NULL) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT='$ColumnName'";
+        // 操作数据库
+        $sql = "CREATE TABLE IF NOT EXISTS `zmyq_".$column."` ( `id` INT UNSIGNED AUTO_INCREMENT, PRIMARY KEY ( `id` ),`identifies` VARCHAR(100) NOT NULL , `newTime` VARCHAR(100) NOT NULL) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT='$columnName'";
         Db::execute($sql);
-
     }
 
-    public function deleTable($data){
-        $Column=$data['Column'];
-        $sql = "DROP TABLE `zmyq_".$Column."` ";
+
+//        删除表
+    public function deleTable($column){
+        //删除了一条数据库的信息
+        Db::table('column')->where('column',$column)->delete();
+        Db::table('program')->where('table_form',$column)->delete();
+
+        // 炒作数据库删除
+        $sql = "DROP TABLE $column ";
         Db::execute($sql);
-        $delesql ="DELETE FROM `program` WHERE `program`.table_form='zmyq_".$Column."'";
-        Db::execute($delesql);
+    }
+
+
+    //更新表名
+    public function updateTable($obj,$columnid,$old){
+//        $obj  将infoJson 全部接受，这边转成数组，可以直接更新
+//        $columnid 获取的修改哪一张的表的信息
+//        $old 原来这张表的所有信息
+
+        $objArray = model('Tools')->object_to_array($obj);
+        $objArray['column'] = 'zmyq_'.$objArray['column'];
+        // 修改栏目列表的值
+        Db::table('column')->where('columnid', $columnid)->update($objArray);
+
+        // 修改表名
+        $sql ='alter table '.$old['column'].' rename '.$objArray['column'].' ';
+        Db::execute($sql);
+
+        // 修改表的注释
+        $sql1 ="alter table ".$objArray['column']." comment '".$objArray['columnName']."' ";
+        Db::execute($sql1);
+
+        // 字段管理
+        $sql2= "update program set table_form=REPLACE(table_form,'".$old['column']."','".$objArray['column']."')";
+        Db::execute($sql2);
+
     }
 
     public function QueryTable($table_form,$a,$b){
@@ -36,30 +69,24 @@ class Column extends Model
         return Db::query($sql);
     }
 
-    public function add($data)
+    // 通过表名来查询这张表
+    public function seleTable($column)
     {
-        $shu=$this->shu();
-        $newdata=array("Column"=>"zmyq_".$data['Column'],"ColumnName"=>$data['ColumnName'],"Columnid"=>$shu);
-        $this->save($newdata);
+       return Db::table('column')->where('column',$column)->find();
     }
 
-    public function dele($data){
-
-        $Column=$data['Column'];
-        $sql = "DELETE FROM `Column` where `Column` = 'zmyq_".$Column."' ";
-        Db::execute($sql);
-    }
-
-    public function sele($data)
+    // 通过classid 这张表
+    public function seleTableClass($columnid)
     {
-        $Column=$data['Column'];
-       return Db::table('Column')->where('Column',"zmyq_".$Column)->find();
-
+        return Db::table('column')->where('columnid',$columnid)->find();
     }
+
+
+
+
 
     public function CheckTable($table,$a,$b)
     {
-
         //查询值的sql
         $sql = "SELECT * FROM `$table` LIMIT ".$a.", ".$b." ";
         return Db::query($sql);
@@ -76,19 +103,5 @@ class Column extends Model
         $sql = "SELECT COUNT(*) FROM `$args` where `table_form` = '".$table_form."'";
         return Db::query($sql);
     }
-
-    // 产生随机出的函数
-    function shu() {
-        $charid = strtoupper(md5(uniqid(mt_rand(), true)));
-
-        $hyphen = chr(45);// "-"
-        $uuid = substr($charid, 0, 8).$hyphen
-            .substr($charid, 8, 4).$hyphen
-            .substr($charid,12, 4).$hyphen
-            .substr($charid,16, 4).$hyphen
-            .substr($charid,20,12);
-        return $uuid;
-    }
-
 
 }
