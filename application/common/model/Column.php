@@ -81,15 +81,34 @@ class Column extends Model
         return Db::table('column')->where('columnid',$columnid)->find();
     }
 
+    //查询表管理的sql
+    public function CheckTableList($columnName,$page,$limit,$whereArry){
+        $whereArry = $whereArry['msg'];
 
+        $whereString ="";
+        for($i=0;$i<sizeof($whereArry);$i++){
+            $whereString='`'.$whereArry[$i].'`,'.$whereString;
+        }
 
+        $whereString = rtrim($whereString,',');
+        $sql = "SELECT ".$whereString." FROM `".$columnName."` LIMIT ".$page.", ".$limit." ";
+
+        $data = Db::query($sql);
+
+        $sql2 = "SELECT COUNT(*) FROM `$columnName`";
+
+        $sum = Db::query($sql2);
+
+        return model('Msg')->paging($sum,$data);
+    }
 
 
     public function CheckTable($table,$a,$b)
     {
         //查询值的sql
         $sql = "SELECT * FROM `$table` LIMIT ".$a.", ".$b." ";
-        return Db::query($sql);
+     echo $sql;
+//        return Db::query($sql);
     }
 
     public function CheckList($args)

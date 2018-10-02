@@ -98,9 +98,9 @@ class Program
 
         $data = input('post.');//think5 的验证机制
         $postData = ["classid","QueryField","QueryKey",'page','limit'];
-        $Checkcode = $this->emptyData($data,$postData);
+        $Checkcode = model("Tools")->emptyData($data,$postData);
 
-        if ($Checkcode['code']==500){
+        if ($Checkcode['flag']==500){
             $res = $Checkcode;
         }else{
             $Columnid = $data['classid'];
@@ -177,13 +177,13 @@ class Program
         for ($x=0; $x<sizeof($getkey); $x++) {
             if (empty($getkey[$getVal[$x]])){
                 $res = [
-                    'code' => 500,
+                    'flag' => 500,
                     'msg' => "'请提交字段'$getVal[$x]"
                 ];
                 return $res;
             }else{
                 $res = [
-                    'code' => 0
+                    'flag' => 0
                 ];
             }
         }
@@ -242,7 +242,7 @@ class Program
             $newname =  time().'.'.$Coccygeal;
             rename($dir. $fileName,$dir.$newname);
 //            echo $dir.$newname;
-            $shu = model('Column')->shu();
+            $shu = model('Tools')->shu();
             $data = ['url' => $dir.$newname , 'identifies' => $shu ];
             model("Program")->uploadFileModel($data);
             echo json_encode(array(

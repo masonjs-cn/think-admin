@@ -45,6 +45,7 @@ class Column  extends Controller
         $data = input('post.');//think5 的验证机制
         $fields = ['column'];
         $res=model('Tools')->emptyData($data,$fields);
+
         if ($res['flag']!=40001){
             $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","delete");
             if($res['flag']==1){
@@ -72,6 +73,7 @@ class Column  extends Controller
         $data = input('post.');//think5 的验证机制
         $fieldVal = ['columnid','infoJson'];
         $res=model('Tools')->emptyData($data,$fieldVal);
+
         if ($res['flag']!=40001){
 
             $obj = json_decode($data['infoJson']);
@@ -93,62 +95,55 @@ class Column  extends Controller
     }
 
 
-
-    public function QueryTable(){
-        $data = input('get.');//think5 的验证机制
-        $fanhui="";
-        $a=$data['page'];
-        $b=$data['limit'];
-        $table_form=$data['table_form'];
-
-        $Count=model('Column')->CheckFileList("program",$table_form);
-        $fanhui=model('Column')->QueryTable($table_form,($a - 1) * $b,$b);
-
-        $res = [
-            'flag' => 1,
-            'count'=>$Count[0]["COUNT(*)"],
-            'msg' => '',
-            'data' => $fanhui
-        ];
-
-
-        echo json_encode($res);
-
-    }
-
-
-
-
     //查询表
     public function CheckTable(){
 
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-        header('Access-Control-Allow-Methods: GET, POST, PUT');
-
-
+        $token = Request::instance()->header('Authorization');    // 人物权限
         $data = input('post.');//think5 的验证机制
-        $currentPage=$data['currentPage'];//当前页
-        $pageSize=$data['pageSize'];//一页加载多少
-        $Columnid=$data['classid'];
-        $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
-        $table=$table[0]['Column'];
-        $Count=model('Column')->CheckList($table);
-        $fanhui=model('Column')->CheckTable($table,($currentPage- 1) * $pageSize,$pageSize);
+        $fields = ['page','limit'];
+        $res=model('Tools')->emptyData($data,$fields);
 
-        $res = [
-            'flag' => 1,
-            'pages' => [
-                "total"=>$Count[0]["COUNT(*)"],//总页数
-                "currentPage"=> $currentPage,//当前页
-                "pageSize"=> $pageSize,//一页加载多少
-            ],
-            'infos' => $fanhui
-        ];
-
-        echo json_encode($res);
+        if ($res['flag']!=40001){
+            $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","check");
+            if($res != null){
+                $page=$data['page'];
+                $limit=$data['limit'];
+               $res = model('Column')->CheckTableList('column',($page- 1) * $limit,$limit,$res);
+            }
+        }
+        echo  json_encode($res);
 
     }
+
+
+
+
+//    public function QueryTable(){
+//        $data = input('get.');//think5 的验证机制
+//        $fanhui="";
+//        $a=$data['page'];
+//        $b=$data['limit'];
+//        $table_form=$data['table_form'];
+//
+//        $Count=model('Column')->CheckFileList("program",$table_form);
+//        $fanhui=model('Column')->QueryTable($table_form,($a - 1) * $b,$b);
+//
+//        $res = [
+//            'flag' => 1,
+//            'count'=>$Count[0]["COUNT(*)"],
+//            'msg' => '',
+//            'data' => $fanhui
+//        ];
+//
+//
+//        echo json_encode($res);
+//
+//    }
+
+
+
+
+
 
 
 

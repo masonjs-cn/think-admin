@@ -38,7 +38,7 @@ class Role extends Model
             if ($res!==""){return $this->CheckField($res,$fields);}
         }else if ($operation=="check"){
             $res = $this->CheckRole($roleid,$classid,3);
-            if ($res!==""){return $this->CheckField($res,$fields);}
+            if ($res!==""){return $this->CheckFieldFind($res,$fields);}
         }
 
     }
@@ -68,10 +68,23 @@ class Role extends Model
         }
    }
 
+    public function CheckFieldFind($fieldSql,$fields){
+        if ($fieldSql !== null) {
+            $fieldArray = explode("||&&||", $fieldSql);
+            return model("Msg")->success($fieldArray);
+        } else {
+            return model("Msg")->qxError();
+        }
+    }
+
+
+
     public function getTocken($token,$fields,$classid,$control){
         $res = [];
         $fanhui= model('Role')->roleJudge($token,$classid,$fields,$control);
-        if ($fanhui['flag']==1){
+        if ($fanhui["msg"]!=""){
+            $res=$fanhui;
+        }else if ($fanhui['flag']==1){
             $res=model("Msg")->success("有权限");
         }else{
             $res=model("Msg")->qxError();
