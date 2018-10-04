@@ -26,7 +26,6 @@ class Column  extends Controller
             if($res['flag']==1){
                 $column=$data['column'];
                 $columnName=$data['columnName'];
-                $res=[];
                 $cha=model('Column')->seleTable($column);
                if ($cha == null){
                     model('Column')->newTable($column,$columnName);
@@ -50,16 +49,12 @@ class Column  extends Controller
             $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","delete");
             if($res['flag']==1){
                 $column=$data['column'];
-                if(strpos($column,'zmyq_') !==false) {
-                    $cha = model('Column')->seleTable($column);
-                    if ($cha != null) {
-                        model('Column')->deleTable($column);
-                        $res = model('Msg')->success('删除成功');
-                    } else {
-                        $res = model('Msg')->error('没有这张表');
-                    }
-                }else{
-                    $res=model('Msg')->error('不能删除基础表');
+                $cha = model('Column')->seleTable($column);
+                if ($cha != null) {
+                    model('Column')->deleTable($column);
+                    $res = model('Msg')->success('删除成功');
+                } else {
+                    $res = model('Msg')->error('没有这张表,或者该表为基础表');
                 }
             }
         }
@@ -76,7 +71,7 @@ class Column  extends Controller
 
         if ($res['flag']!=40001){
 
-            $obj = json_decode($data['infoJson']);
+            $obj = $data['infoJson'];
             $objArry = model('Tools')->traverseObjKey($obj);
             $columnid=$data['columnid'];
             $res=model('Role')->getTocken($token,$objArry,"DEBXX919-5569-45AA-06C8-BE57F4884555","update");
@@ -84,8 +79,18 @@ class Column  extends Controller
                 $res=[];
                 $cha=model('Column')->seleTableClass($columnid);
                 if ($cha != null){
-                    model('Column')->updateTable($obj,$columnid,$cha);
-                    $res = model('Msg')->success('修改成功');
+                    if(strpos($cha['column'],'zmyq_') !==false){
+                        $cha2=model('Column')->seleTable($data['infoJson']['column']);
+                        if ($cha2 == null){
+                            model('Column')->updateTable($obj,$columnid,$cha);
+                            $res = model('Msg')->success('修改成功');
+                        }
+                        else{
+                            $res=model('Msg')->error('已经有了这张表');
+                        }
+                    }else{
+                        $res=model('Msg')->error('不允许修改基础表');
+                    }
                 }else{
                     $res=model('Msg')->error('没有这张表');
                 }
@@ -100,14 +105,14 @@ class Column  extends Controller
 
         $token = Request::instance()->header('Authorization');    // 人物权限
         $data = input('post.');//think5 的验证机制
-        $fields = ['page','limit'];
+        $fields = ['currentPage','pageSize'];
         $res=model('Tools')->emptyData($data,$fields);
 
         if ($res['flag']!=40001){
             $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","check");
             if($res != null){
-                $page=$data['page'];
-                $limit=$data['limit'];
+                $page=$data['currentPage'];
+                $limit=$data['pageSize'];
                $res = model('Column')->CheckTableList('column',($page- 1) * $limit,$limit,$res);
             }
         }

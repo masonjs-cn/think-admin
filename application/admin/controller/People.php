@@ -34,7 +34,7 @@ class People
 
             if ($info[0]['password']==$password){
                $shu = model('Tools')->shu();
-                 Session::set($shu,$info[0]['rid'],'think');
+               Session::set($shu,$info[0]['orgid'],'think');
                $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
             }else{
                 $fanhui= array('flag'=>0, 'msg'=>'密码错误');
@@ -55,22 +55,29 @@ class People
         $password=$data['password'];
         $code=$data['code'];
 
-        $scode=Session::get('code','think');
-        if ($code == $scode){
+        $fieldVal = ['e_mail','password','code'];
+        $res=model('Tools')->emptyData($data,$fieldVal);
+        if ($res['flag']!=40001){
 
-            $info=model('People')->loginEmail($e_mail);//获取邮箱配置信息
+            $scode=Session::get('code','think');
+            if ($code == $scode) {
 
-            if ($info[0]['password']==$password){
-                $shu = model('Tools')->shu();
-                Session::set($shu,$info[0]['rid'],'think');
-                $fanhui= array('flag'=>1, 'msg'=>'登录成功','token'=>$shu);
+               $info=model('People')->loginEmail($e_mail);//获取邮箱配置信息
+                if ($info[0]['password']==$password){
+                    $shu = model('Tools')->random();
+                    Session::set($shu,$info[0]['orgid'],'think');
+                    $res = model('Msg')->success($shu);
+
+                }else{
+                    $res = model('Msg')->error('密码错误');
+                }
+
             }else{
-                $fanhui= array('flag'=>0, 'msg'=>'密码错误');
+                $res = model('Msg')->error('验证码错误');
             }
-        }else{
-            $fanhui= array('flag'=>0, 'msg'=>'验证码错误');
         }
-        echo  json_encode($fanhui);
+
+        echo  json_encode($res);
 
     }
 

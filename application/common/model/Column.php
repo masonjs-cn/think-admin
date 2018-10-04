@@ -30,11 +30,11 @@ class Column extends Model
 //        删除表
     public function deleTable($column){
         //删除了一条数据库的信息
-        Db::table('column')->where('column',$column)->delete();
-        Db::table('program')->where('table_form',$column)->delete();
+        Db::table('column')->where('column','zmyq_'.$column)->delete();
+        Db::table('program')->where('table_form','zmyq_'.$column)->delete();
 
-        // 炒作数据库删除
-        $sql = "DROP TABLE $column ";
+        // 操作数据库删除
+        $sql = "DROP TABLE zmyq_".$column." ";
         Db::execute($sql);
     }
 
@@ -72,7 +72,7 @@ class Column extends Model
     // 通过表名来查询这张表
     public function seleTable($column)
     {
-       return Db::table('column')->where('column',$column)->find();
+       return Db::table('column')->where('column','zmyq_'.$column)->find();
     }
 
     // 通过classid 这张表

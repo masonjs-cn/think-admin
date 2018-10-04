@@ -22,7 +22,7 @@ class Msg
     public function paging($Count,$fanhui){
         $res = [
             'flag' => 1,
-            'pageSize'=>$Count[0]["COUNT(*)"],
+            'total'=>$Count[0]["COUNT(*)"],
             'msg' => '',
             'data' => $fanhui
         ];

@@ -9,6 +9,7 @@
 namespace app\common\model;
 use think\Model;
 use think\Db;
+use think\Session;
 
 class Role extends Model
 {
@@ -45,6 +46,8 @@ class Role extends Model
 
    public function CheckRole($roleid,$classid,$control)
    {
+       $roleid=Session::get($roleid,'think');
+
        $fieldSql = Db::table('role')
            ->where('roleid', $roleid)
            ->where('control', $control)
