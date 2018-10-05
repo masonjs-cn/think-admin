@@ -61,6 +61,7 @@ class Column  extends Controller
         echo  json_encode($res);
     }
 
+    //修改表
     public function updateTable(){
 //        column  表名
 //        columnName  表标题
@@ -100,8 +101,8 @@ class Column  extends Controller
     }
 
 
-    //查询表
-    public function CheckTable(){
+    // 查询所有的表
+    public function CheckTableList(){
 
         $token = Request::instance()->header('Authorization');    // 人物权限
         $data = input('post.');//think5 的验证机制
@@ -123,27 +124,32 @@ class Column  extends Controller
 
 
 
-//    public function QueryTable(){
-//        $data = input('get.');//think5 的验证机制
-//        $fanhui="";
-//        $a=$data['page'];
-//        $b=$data['limit'];
-//        $table_form=$data['table_form'];
-//
-//        $Count=model('Column')->CheckFileList("program",$table_form);
-//        $fanhui=model('Column')->QueryTable($table_form,($a - 1) * $b,$b);
-//
-//        $res = [
-//            'flag' => 1,
-//            'count'=>$Count[0]["COUNT(*)"],
-//            'msg' => '',
-//            'data' => $fanhui
-//        ];
-//
-//
-//        echo json_encode($res);
-//
-//    }
+    public function CheckTable(){
+
+        $token = Request::instance()->header('Authorization');    // 人物权限
+        $data = input('post.');//think5 的验证机制
+        $fields = ['currentPage','pageSize',"classid"];
+        $res=model('Tools')->emptyData($data,$fields);
+        $classid=$data['classid'];
+
+        if ($res['flag']!=40001){
+            $res=model('Role')->getTocken($token,$fields,$classid,"check");
+            if($res != null){
+                $page=$data['currentPage'];
+                $limit=$data['pageSize'];
+                $cha=model('Column')->seleTableClass($classid);
+                if ($cha != null) {
+                    $res = model('Column')->CheckTableList($cha['column'], ($page - 1) * $limit, $limit, $res);
+                }else{
+                    $res=model('Msg')->error('没有这张表');
+                }
+            }else{
+               $res=model("Msg")->qxError();
+            }
+        }
+        echo  json_encode($res);
+
+    }
 
 
 

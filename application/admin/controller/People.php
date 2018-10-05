@@ -17,7 +17,7 @@ use think\Session;
 
 class People
 {
-    // 手机号登录
+    // 手机号登录,现在没有注册成功，所以这个功能闲置
     public function loginTel(){
         $data = input('post.');//think5 的验证机制
         //        ipone  用户名/手机号
@@ -46,6 +46,7 @@ class People
 
     }
 
+    // 邮箱登录
     public function loginEmail(){
         $data = input('post.');//think5 的验证机制
         //        e_mail    邮箱
@@ -66,6 +67,7 @@ class People
                 if ($info[0]['password']==$password){
                     $shu = model('Tools')->random();
                     Session::set($shu,$info[0]['orgid'],'think');
+                    model('People')->loginTime($info[0]['rid']);
                     $res = model('Msg')->success($shu);
 
                 }else{
@@ -81,13 +83,7 @@ class People
 
     }
 
-    public function getTocken(){
-        $token = Request::instance()->header('Authorization');// 人物权限
-        $fields = ["facility","issue","price","processing","Stick"]; // 要控制的值
-        $classid = "CE68E83A-65A7-E588-A63D-5D24CD2A755D";
-        $res=model('Role')->getTocken($token,$fields,$classid,"add");
-        echo $res;
-    }
+
 
     //注册接口
     public function registered(){
@@ -138,10 +134,9 @@ class People
                 $nick=model('People')->seleNick($nickname);//获取昵称信息
                 if (empty($info)){
                     if (empty($nick)){
-                        $request = Request::instance();
-                        $data = ['e_mail' => $e_mail, 'password' => $password,'nickname' =>$nickname,'last_login_ip'=>$request->ip(),'last_login_time'=>time()];
+                        $request = model("Tools")->get_real_ip();
+                        $data = ['e_mail' => $e_mail, 'password' => $password,'nickname' =>$nickname,'last_login_ip'=>$request->ip(),'last_login_time'=>time(),'freeze'=>0];
                         model('People')->addPeople($data);
-
                         $fanhui= array('flag'=>1, 'msg'=>'注册成功');
                         echo  json_encode($fanhui);
 
@@ -178,6 +173,16 @@ class People
 
 
         }
+
+
+    //    获取Tocken的方法，这里不做记录
+    public function getTocken(){
+        $token = Request::instance()->header('Authorization');// 人物权限
+        $fields = ["facility","issue","price","processing","Stick"]; // 要控制的值
+        $classid = "CE68E83A-65A7-E588-A63D-5D24CD2A755D";
+        $res=model('Role')->getTocken($token,$fields,$classid,"add");
+        echo $res;
+    }
 
 
 

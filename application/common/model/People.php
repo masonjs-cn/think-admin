@@ -45,5 +45,11 @@ class People
         return Db::query($sql);
     }
 
+    public function loginTime($rid){
+        $ip=model('Tools')->get_real_ip();
+        $now=time();
+        Db::table('people')->where('rid', $rid)->update(['last_login_time' => $now,'last_login_ip'=>$ip]);
+    }
+
 
 }

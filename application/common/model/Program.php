@@ -50,12 +50,17 @@ class Program extends Model
         return Db::query($sql);
     }
 
-    public function CheckTable($table,$a,$b,$QueryField,$QueryKey)
+    public function checkTable($table,$whereArry,$objArry)
     {
+//        print_r($table);
+//        print_r($whereArry);
+        $whereString = "";
+        for ($i=0;$i<sizeof($whereArry);$i++){
+            $whereString =$objArry[$i].'="'.$whereArry[$objArry[$i]] .'",'.$whereString;
+        }
 
-        //查询值的sql
-        $sql = "SELECT * FROM `$table` WHERE $QueryField = ".$QueryKey."  LIMIT ".$a.", ".$b." ";
-//        print_r($sql);
+        $whereString=rtrim($whereString,',');
+        $sql = "select * from ".$table." where ".$whereString." ";
         return Db::query($sql);
     }
 

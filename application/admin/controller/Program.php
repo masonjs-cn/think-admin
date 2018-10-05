@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 use app\common\model\Email;
 use PHPMailer\PHPMailer\PHPMailer;
+use \think\Request;
 
 class Program
 {
@@ -83,43 +84,60 @@ class Program
     }
 
     //通过字段查询信息
-    public function QueryField(){
+    public function checkField(){
         //    通过字段和值查询这条信息
         //    classid  表id
         //    QueryField  查询的字段
         //    QueryKey  查询的字段值
-        // 指定允许其他域名访问
-        header('Access-Control-Allow-Origin:*');
-        // 响应类型
-        header('Access-Control-Allow-Methods:POST');
-        // 响应头设置
-        header('Access-Control-Allow-Headers:x-requested-with,content-type');
 
-
+        $token = Request::instance()->header('Authorization');    // 人物权限
         $data = input('post.');//think5 的验证机制
-        $postData = ["classid","QueryField","QueryKey",'page','limit'];
-        $Checkcode = model("Tools")->emptyData($data,$postData);
-
-        if ($Checkcode['flag']==500){
-            $res = $Checkcode;
-        }else{
-            $Columnid = $data['classid'];
-            $QueryField = $data['QueryField'];
-            $QueryKey=$data['QueryKey'];
-            $a=$data['page'];
-            $b=$data['limit'];
-
-            $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
-            $Count=model('Column')->CheckList($table[0]['Column']);
-            $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
-            $res = [
-                'flag' => 1,
-                'count'=>$Count[0]["COUNT(*)"],
-                'msg' => '',
-                'data' => $fanhui
-            ];
+        $fields = ["classid","infoJson"];
+        $res=model('Tools')->emptyData($data,$fields);
+        $classid=$data['classid'];
+        if ($res['flag']!=40001){
+            $obj = $data['infoJson'];
+            $objArry = model('Tools')->traverseObjKey($obj);
+            $res=model('Role')->getTocken($token,$objArry,$classid,"checkField");
+            if($res != null){
+                $cha=model('Column')->seleTableClass($classid);
+                if ($cha != null) {
+                    $whereArry = model('Tools')->object_to_array($obj);
+                    $fanhui=model('Program')->checkTable($cha["column"],$whereArry,$objArry);
+                    $res=model("Msg")->success($fanhui);
+                }else{
+                    $res=model('Msg')->error('没有这张表');
+                }
+           }else{
+                $res=model("Msg")->qxError();
+            }
         }
-        echo json_encode($res);
+        echo  json_encode($res);
+
+
+//        $postData = ["classid","QueryField","QueryKey",'page','limit'];
+//        $Checkcode = model("Tools")->emptyData($data,$postData);
+//
+//        if ($Checkcode['flag']==500){
+//            $res = $Checkcode;
+//        }else{
+//            $Columnid = $data['classid'];
+//            $QueryField = $data['QueryField'];
+//            $QueryKey=$data['QueryKey'];
+//            $a=$data['page'];
+//            $b=$data['limit'];
+//
+//            $table=model('Program')->seleField("Column",'Columnid',$Columnid);//获取修改表的名称
+//            $Count=model('Column')->CheckList($table[0]['Column']);
+//            $fanhui=model('Program')->CheckTable($table[0]['Column'],($a - 1) * $b,$b,$QueryField,$QueryKey);
+//            $res = [
+//                'flag' => 1,
+//                'count'=>$Count[0]["COUNT(*)"],
+//                'msg' => '',
+//                'data' => $fanhui
+//            ];
+//        }
+//        echo json_encode($res);
 
     }
 

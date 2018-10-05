@@ -40,12 +40,16 @@ class Role extends Model
         }else if ($operation=="check"){
             $res = $this->CheckRole($roleid,$classid,3);
             if ($res!==""){return $this->CheckFieldFind($res,$fields);}
+        }else if ($operation=="checkField"){
+            $res = $this->CheckRole($roleid,$classid,3);
+            if ($res!==""){return $this->CheckField($res,$fields);}
         }
 
     }
 
    public function CheckRole($roleid,$classid,$control)
    {
+
        $roleid=Session::get($roleid,'think');
 
        $fieldSql = Db::table('role')
@@ -59,13 +63,26 @@ class Role extends Model
    public function CheckField($fieldSql,$fields){
         if ($fieldSql !== null) {
             $fieldArray = explode("||&&||", $fieldSql);
-            sort($fields);//排序
-            sort($fieldArray);//排序
-            if($fields == $fieldArray){
+
+            $c = array_diff($fields, $fieldArray);
+            $flag = empty($c)?1 : 0;
+
+            if ($flag) {
                 return model("Msg")->success("");
-            }else{
+            }else {
                 return model("Msg")->qxError();
             }
+
+
+//            sort($fields);//排序
+//            sort($fieldArray);//排序
+//            if($fields == $fieldArray){
+//                return model("Msg")->success("");
+//            }else{
+//                return model("Msg")->qxError();
+//            }
+
+
         } else {
                 return model("Msg")->qxError();
         }
