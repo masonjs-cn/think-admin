@@ -13,34 +13,51 @@ use think\Db;
 
 class Program extends Model
 {
+
+
+    // 通过字段查询
+    public function checkField($table,$whereArry,$objArry)
+    {
+        $whereString = "";
+        for ($i=0;$i<sizeof($whereArry);$i++){
+            $whereString =$objArry[$i].'="'.$whereArry[$objArry[$i]] .'" and '.$whereString;
+        }
+
+        $whereString=rtrim($whereString,' and ');
+        $sql = "select * from ".$table." where ".$whereString." ";
+        return Db::query($sql);
+    }
+
+
     public function addField($data)
     {
         //增加信息的sql
         return  $this->save($data);
     }
 
-    public function addFieldinfos($table,$infoJson,$send){
+    // 增加信息
+    public function addFieldinfos($table,$data){
 //        $send  0 不发送 1发送
 
-        $Fkey="";
-        $Fval="";
-        $info = "";
-        foreach($infoJson as $key => $val){
-            $Fkey = $Fkey."`$key`,";
-            $Fval = $Fval."'$val',";
-            if($send==1){
-//                $info =$info.'<div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$key.'</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$val.'</div>';
-                $info =$info.'<tr><td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;">						'.$key.'</div>				</td>				<td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;margin:5px;">						'.$val.'</div>				</td></tr>';
+        $infoJson = $data['infoJson'];
+        $send = $data['send'];
+
+        if($send["send"]==1) {
+            $Fkey="";
+            $Fval="";
+            $info = "";
+            foreach($infoJson as $key => $val){
+                $Fkey = $Fkey."`$key`,";
+                $Fval = $Fval."'$val',";
+                if($send["send"]==1){
+    //                $info =$info.'<div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$key.'</div><div style="float:left;width:48%;border: 1px solid #000000;padding:5px;">'.$val.'</div>';
+                    $info =$info.'<tr><td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;">						'.$key.'</div>				</td>				<td style="border: 1px solid #000;">					<div style="width:600px;text-align:left;font:17px/18px simsun;color:#000;background:#fff;text-align:center;margin:5px;margin:5px;">						'.$val.'</div>				</td></tr>';
+                }
             }
+                model("Email")->mailYzm("954663633@qq.com", $send["email"], $info);//      e_mail: 邮箱地址
         }
-        $Fkey=rtrim($Fkey, ',');
-        $Fval=rtrim($Fval, ',');
-        $time=time();
-        if($send==1) {
-            model("Email")->mailYzm("954663633@qq.com", "BBA6E0E3-442E-6666-6B6B-53639CD557CC", $info);//      e_mail: 邮箱地址
-        }
-        $sql = "INSERT INTO `$table` ($Fkey,`".'newTime'."`) VALUES ($Fval,'".$time."')";
-        Db::execute($sql);
+
+        Db::table($table)->insert($infoJson);
     }
 
     public function seleField($table,$field,$Columnid)
@@ -50,26 +67,13 @@ class Program extends Model
         return Db::query($sql);
     }
 
-    public function checkTable($table,$whereArry,$objArry)
-    {
-//        print_r($table);
-//        print_r($whereArry);
-        $whereString = "";
-        for ($i=0;$i<sizeof($whereArry);$i++){
-            $whereString =$objArry[$i].'="'.$whereArry[$objArry[$i]] .'",'.$whereString;
-        }
 
-        $whereString=rtrim($whereString,',');
-        $sql = "select * from ".$table." where ".$whereString." ";
-        return Db::query($sql);
-    }
 
-    public function deleField($table,$Field,$Key)
+
+    public function deleField($table,$field,$key)
     {
         //删除值的sql
-        $sql = "DELETE FROM `".$table."` WHERE `".$table."`.`".$Field."` = `".$Key."`";
-        Db::execute($sql);
-//        print_r($sql);
+        Db::table($table)->where($field,$key)->delete();
     }
 
     public function addTableField($table,$field,$fieldType,$fieldSize){

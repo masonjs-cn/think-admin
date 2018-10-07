@@ -74,15 +74,6 @@ class Role extends Model
             }
 
 
-//            sort($fields);//排序
-//            sort($fieldArray);//排序
-//            if($fields == $fieldArray){
-//                return model("Msg")->success("");
-//            }else{
-//                return model("Msg")->qxError();
-//            }
-
-
         } else {
                 return model("Msg")->qxError();
         }
