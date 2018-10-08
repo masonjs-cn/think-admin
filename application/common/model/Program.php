@@ -76,6 +76,14 @@ class Program extends Model
         Db::table($table)->where($field,$key)->delete();
     }
 
+    public function updateField($table,$field,$key,$infoJson)
+    {
+        Db::table($table)->where($field, $key)->update($infoJson);
+    }
+
+
+
+//======================================
     public function addTableField($table,$field,$fieldType,$fieldSize){
         //新建表的sql
         $sql = "ALTER TABLE `".$table."` ADD `".$field."` ".$fieldType."(".$fieldSize.")";
