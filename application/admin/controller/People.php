@@ -13,8 +13,6 @@ use think\Cookie;
 use \think\Request;
 use think\Session;
 
-
-
 class People
 {
     // 手机号登录,现在没有注册成功，所以这个功能闲置
@@ -83,9 +81,7 @@ class People
 
     }
 
-
-
-    //注册接口
+    // 注册接口
     public function registered(){
         $data = input('post.');//think5 的验证机制
 //        ipone  用户名/手机号
@@ -122,8 +118,7 @@ class People
 
     }
 
-
-    //通过邮箱注册账号一次封装
+    // 通过邮箱注册账号一次封装
     public function emailProgenitor($e_mail,$password,$nickname,$code){
         $e_Mailnew = explode('@',$e_mail);
         if (Cookie::has("".$e_Mailnew[0]."") == 1){
@@ -162,20 +157,23 @@ class People
 
     }
 
-        public function mailYzm(){
-//            e_mail: 邮箱地址
-//            e_mailid: 邮箱的模型编号
+    // 邮箱验证码
+    public function mailYzm(){
+//     e_mail: 邮箱地址
+//     e_mailid: 邮箱的模型编号
 
-            $data = input('post.');//think5 的验证机制
-            $e_Mail = $data['e_mail']; // 这个是发送的邮箱，肯定是接口调用的
-            $e_Mailid = $data['e_mailid'];
-            model("Email")->mailYzm($e_Mail,$e_Mailid);
-
-
-        }
+        $data = input('post.');//think5 的验证机制
+        $e_Mail = $data['e_mail']; // 这个是发送的邮箱，肯定是接口调用的
+        $e_Mailid = $data['e_mailid'];
+        model("Email")->mailYzm($e_Mail,$e_Mailid);
 
 
-    //    获取Tocken的方法，这里不做记录
+    }
+
+
+
+//    ======================
+    //  获取Tocken的方法，这里不做记录
     public function getTocken(){
         $token = Request::instance()->header('Authorization');// 人物权限
         $fields = ["facility","issue","price","processing","Stick"]; // 要控制的值
@@ -187,4 +185,4 @@ class People
 
 
 
-    }
+}

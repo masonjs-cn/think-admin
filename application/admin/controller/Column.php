@@ -13,94 +13,6 @@ use think\Controller;
 
 class Column  extends Controller
 {
-    //添加表
-    public function newTable(){
-//        column  表名
-//        columnName  表标题
-        $token = Request::instance()->header('Authorization');    // 人物权限
-        $data = input('post.');//think5 的验证机制
-        $fields = ['column','columnName'];
-        $res=model('Tools')->emptyData($data,$fields);
-        if ($res['flag']!=40001){
-            $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","add");
-            if($res['flag']==1){
-                $column=$data['column'];
-                $columnName=$data['columnName'];
-                $cha=model('Column')->seleTable($column);
-               if ($cha == null){
-                    model('Column')->newTable($column,$columnName);
-                    $res = model('Msg')->success('建表成功');
-               }else{
-                   $res=model('Msg')->error('表名不能重复');
-               }
-            }
-        }
-        echo  json_encode($res);
-    }
-
-    //删除表
-    public function deleTable(){
-        $token = Request::instance()->header('Authorization');    // 人物权限
-        $data = input('post.');//think5 的验证机制
-        $fields = ['column'];
-        $res=model('Tools')->emptyData($data,$fields);
-
-        if ($res['flag']!=40001){
-            $res=model('Role')->getTocken($token,$fields,"DEBXX919-5569-45AA-06C8-BE57F4884555","delete");
-            if($res['flag']==1){
-                $column=$data['column'];
-                $cha = model('Column')->seleTable($column);
-                if ($cha != null) {
-                    model('Column')->deleTable($column);
-                    $res = model('Msg')->success('删除成功');
-                } else {
-                    $res = model('Msg')->error('没有这张表,或者该表为基础表');
-                }
-            }
-        }
-        echo  json_encode($res);
-    }
-
-    //修改表
-    public function updateTable(){
-//        column  表名
-//        columnName  表标题
-        $token = Request::instance()->header('Authorization');    // 人物权限
-        $data = input('post.');//think5 的验证机制
-        $fieldVal = ['columnid','infoJson'];
-        $res=model('Tools')->emptyData($data,$fieldVal);
-
-        if ($res['flag']!=40001){
-
-            $obj = $data['infoJson'];
-            $objArry = model('Tools')->traverseObjKey($obj);
-            $columnid=$data['columnid'];
-            $res=model('Role')->getTocken($token,$objArry,"DEBXX919-5569-45AA-06C8-BE57F4884555","update");
-            if($res['flag']==1){
-                $res=[];
-                $cha=model('Column')->seleTableClass($columnid);
-                if ($cha != null){
-                    if(strpos($cha['column'],'zmyq_') !==false){
-                        $cha2=model('Column')->seleTable($data['infoJson']['column']);
-                        if ($cha2 == null){
-                            model('Column')->updateTable($obj,$columnid,$cha);
-                            $res = model('Msg')->success('修改成功');
-                        }
-                        else{
-                            $res=model('Msg')->error('已经有了这张表');
-                        }
-                    }else{
-                        $res=model('Msg')->error('不允许修改基础表');
-                    }
-                }else{
-                    $res=model('Msg')->error('没有这张表');
-                }
-            }
-        }
-        echo  json_encode($res);
-    }
-
-
     // 查询所有的表
     public function CheckTableList(){
 
@@ -120,8 +32,6 @@ class Column  extends Controller
         echo  json_encode($res);
 
     }
-
-
 
 
     public function CheckTable(){
@@ -150,16 +60,5 @@ class Column  extends Controller
         echo  json_encode($res);
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
