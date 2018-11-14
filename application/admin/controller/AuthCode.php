@@ -13,6 +13,14 @@ use think\Session;
 
 class AuthCode
 {
+    //  获取Tocken的方法，这里不做记录
+    public function getTocken(){
+        $token = Request::instance()->header('Authorization');// 人物权限
+        $fields = ["facility","issue","price","processing","Stick"]; // 要控制的值
+        $classid = "CE68E83A-65A7-E588-A63D-5D24CD2A755D";
+        $res=model('Role')->getTocken($token,$fields,$classid,"add");
+        echo $res;
+    }
 
     function ImageCode(){
         session_start();
@@ -43,6 +51,5 @@ class AuthCode
         }
         echo  json_encode($fanhui);
     }
-
 
 }
