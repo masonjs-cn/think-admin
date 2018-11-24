@@ -10,7 +10,7 @@ namespace app\admin\controller;
 use \think\Request;
 use think\Controller;
 
-class info extends Controller
+class Info extends Controller
 {
     //通过字段查询信息
     public function checkField(){
@@ -115,8 +115,13 @@ class info extends Controller
 
             $obj = $data['infoJson'];
             $objArryKey = model('Tools')->traverseObjKey($obj);
-            $objArryKey[sizeof($objArryKey)+1]=$data['mainKey'];
-
+//            if(strpos($data['mainKey'],',') !==false){
+//
+//                echo '包含该字符串';
+//
+//            }else{
+//                $objArryKey[sizeof($objArryKey)+1]=$data['mainKey'];
+//            }
             $res=model('Role')->getTocken($token,$objArryKey,$classid,"update");
 
             if($res['flag'] !==10001) {

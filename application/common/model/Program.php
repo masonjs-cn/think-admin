@@ -78,7 +78,23 @@ class Program extends Model
 
     public function updateField($table,$field,$key,$infoJson)
     {
-        Db::table($table)->where($field, $key)->update($infoJson);
+        if(strpos($field,',') !==false){
+            $whereField = '';
+
+            $field = explode(",", $field);
+            $key = explode(",", $key);
+
+            for ($x=0; $x<sizeof($field); $x++) {
+                $whereField = $whereField."`".$field[$x]."`='"."$key[$x]' and ";
+            }
+            $whereField=rtrim($whereField,' and ');
+            $sql = 'SELECT * FROM `'.$table.'` WHERE '.$whereField;
+            $fanhui = Db::query($sql);
+            Db::table($table)->where('id', $fanhui[0]['id'])->update($infoJson);
+
+        }else{
+            Db::table($table)->where($field, $key)->update($infoJson);
+        }
     }
 
 
