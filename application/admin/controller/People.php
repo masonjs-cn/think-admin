@@ -122,7 +122,7 @@ class People
 
     }
 
-    // 用户注册接口
+    // 用户名注册接口
     public function registeredUser(){
         $data = input('post.');//think5 的验证机制
 //        ipone  用户名/手机号
@@ -161,7 +161,7 @@ class People
 
 //  ====== 登录接口
 
-    // 手机号登录,现在没有注册成功，所以这个功能闲置
+    // 手机号登录
     public function loginTel(){
         $data = input('post.');//think5 的验证机制
         //        ipone  用户名/手机号

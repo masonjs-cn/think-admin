@@ -149,7 +149,7 @@ class DataCenter extends Controller
     }
 
     //删除字段接口
-    public function DeleTableField(){
+    public function deleTableField(){
         //    删除字段接口
         //    Columnid  表id
         //    deleField  查询的字段
