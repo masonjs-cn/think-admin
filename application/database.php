@@ -19,7 +19,7 @@ return [
     // 用户名
     'username'        => 'platform',
     // 密码
-    'password'        => 'Dx6AMcwx63',
+    'password'        => 'ZJA43Bdax7KmD3WX',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

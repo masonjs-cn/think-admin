@@ -16,7 +16,7 @@ class Column  extends Controller
     // 查询所有的表
     public function CheckTableList(){
 
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['currentPage','pageSize'];
         $res=model('Tools')->emptyData($data,$fields);
@@ -36,7 +36,7 @@ class Column  extends Controller
 
     public function CheckTable(){
 
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['currentPage','pageSize',"classid"];
         $res=model('Tools')->emptyData($data,$fields);

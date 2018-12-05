@@ -253,7 +253,7 @@ class People
                 $roleTile = $info[0]['orgid'] == 'B834D761-7BFB-A5F5-33F6-9C90EC3FC2D6' ? '超级管理员':'普通用户';
 
                 $fanhui = [
-                    'Authorization' => $shu,
+                    'auth' => $shu,
                     'userName' => $userName,
                     'role' => $roleTile
                 ];

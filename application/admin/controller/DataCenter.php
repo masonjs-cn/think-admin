@@ -16,7 +16,7 @@ class DataCenter extends Controller
     public function newTable(){
 //        column  表名
 //        columnName  表标题
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['column','columnName'];
         $res=model('Tools')->emptyData($data,$fields);
@@ -39,7 +39,7 @@ class DataCenter extends Controller
 
     //删除表
     public function deleTable(){
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['column'];
         $res=model('Tools')->emptyData($data,$fields);
@@ -64,7 +64,7 @@ class DataCenter extends Controller
     public function updateTable(){
 //        column  表名
 //        columnName  表标题
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fieldVal = ['columnid','infoJson'];
         $res=model('Tools')->emptyData($data,$fieldVal);

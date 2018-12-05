@@ -19,7 +19,7 @@ class Info extends Controller
         //    QueryField  查询的字段
         //    QueryKey  查询的字段值
 
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ["classid","infoJson"];
         $res=model('Tools')->emptyData($data,$fields);
@@ -51,7 +51,7 @@ class Info extends Controller
     public function addInfos(){
         //    添加信息
 
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
 
         $fields = ["classid","infoJson",'send'];
@@ -79,7 +79,7 @@ class Info extends Controller
 
     //删除数据
     public function deleInfos(){
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['mainKey','mainVal','classid'];
         $res=model('Tools')->emptyData($data,$fields);
@@ -105,7 +105,7 @@ class Info extends Controller
 
     //更新数据
     public function updateInfos(){
-        $token = Request::instance()->header('Authorization');    // 人物权限
+        $token = Request::instance()->header('auth');    // 人物权限
         $data = input('post.');//think5 的验证机制
         $fields = ['mainKey','mainVal','classid','infoJson'];
         $res=model('Tools')->emptyData($data,$fields);

@@ -6,6 +6,7 @@
  * Time: 21:53
  */
 
+// namespace vcode;
 namespace app\common\model;
 use think\Session;
 
